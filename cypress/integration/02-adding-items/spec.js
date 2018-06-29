@@ -1,37 +1,49 @@
 /// <reference types="cypress" />
+
+const addItem = text => {
+  cy.get('.new-todo').type(`${text}{enter}`)
+  cy.contains('li.todo', text).should('be.visible')
+}
+
+beforeEach(function() {
+  cy.visit('/')
+})
+
 it('loads', () => {
-  // application should be running at port 3000
-  cy.visit('localhost:3000')
   cy.contains('a', 'TodoMVC')
 })
 
 it('starts with zero items', () => {
-  // TODO check if the list is empty initially
-  // find the selector for the individual TODO items in the list
-  // use cy.get(...) and it should have length of 0
+  cy.get('li.todo').should('not.exist')
 })
 
 it('adds two items', () => {
-  // repeat twice
-  //    get the input field
-  //    type text and "enter"
-  //    assert that the new Todo item
-  //    has been added added to the list
+  addItem('first item')
+  addItem('second item')
 })
 
 it('can add many items', () => {
   const N = 5
   for (let k = 0; k < N; k += 1) {
-    // add an item
-    // probably want to have a reusable function to add an item!
+    addItem(`Item ${k}`)
   }
-  // check number of items
+  cy.get('li.todo').should('have.length', 7)
 })
 
 it('can mark items as completed', () => {
-  // add a few items
-  // mark items as completed
-  // select completed items and confirm their number
+  addItem('foo')
+  cy.contains('li.todo', 'foo')
+    .should('exist')
+    .find('input[type="checkbox"]')
+    .should('not.be.checked')
+    .check()
+    .should('be.checked')
+})
+
+it('can remove items', () => {
+  addItem('bar')
+  cy.contains('li.todo', 'bar').find('.destroy').click({force: true})
+  cy.contains('li.todo', 'bar').should('not.exist')
 })
 
 // what a challenge?
