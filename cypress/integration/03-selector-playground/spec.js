@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+import {addItem} from '../helper'
+
 beforeEach(() => {
   // application should be running at port 3000
   // and the "localhost:3000" is set as "baseUrl" in "cypress.json"
@@ -11,9 +13,8 @@ it('loads', () => {
  * Adds a todo item
  * @param {string} text
  */
-const addItem = text => {}
 it('adds two items', () => {
   addItem('first item')
   addItem('second item')
-  cy.get('...').should('have.length', 2)
+  cy.get('[data-cy="item"]').should('have.length', 2)
 })

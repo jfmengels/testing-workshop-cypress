@@ -1,9 +1,5 @@
 /// <reference types="cypress" />
-
-const addItem = text => {
-  cy.get('.new-todo').type(`${text}{enter}`)
-  cy.contains('li.todo', text).should('be.visible')
-}
+import {addItem} from '../helper'
 
 beforeEach(function() {
   cy.visit('/')
